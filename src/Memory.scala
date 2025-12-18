@@ -1,3 +1,3 @@
-object Memory {
+object Memory extends App{
 
 }
