@@ -15,7 +15,7 @@ class Player() {
     this.playing = false
   }
 
-  def set_score(s: Int) = {
+  def set_score(s: Int): Unit = {
     this.score = s
   }
 

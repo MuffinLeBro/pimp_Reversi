@@ -2,6 +2,7 @@ package utils
 
 import java.awt.Font
 import javax.swing.{JFrame, JOptionPane, JPasswordField, JTextField, WindowConstants}
+import scala.annotation.tailrec
 
 
 /**
@@ -20,6 +21,7 @@ object Dialogs {
    * The message displayed to ask for the hidden String
    * @return The hidden String entered
    */
+  @tailrec
   def getString(message: String): String = {
     val frame = new JFrame(message)
     frame.setSize(100, 100)
@@ -39,6 +41,7 @@ object Dialogs {
    * The message asking for the character.
    * @return The character entered.
    */
+  @tailrec
   def getChar(message: String): Char = {
     val frame = new JFrame("Input a character please")
     val s = JOptionPane.showInputDialog(frame, message)

@@ -13,7 +13,7 @@ import java.awt.Color
 object Shape extends Config{
   /**
    *
-   * @param display
+   * @param display, the FunGraphics
    * @param cell which contains the circle (Pion)
    */
   def drawDisc(display: FunGraphics, cell: Cell) : Unit = {

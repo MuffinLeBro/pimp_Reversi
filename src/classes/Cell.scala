@@ -18,7 +18,7 @@ class Cell() {
     this.center = new Point()
   }
 
-  def set_pion(p: Pion) = {
+  def set_pion(p: Pion): Unit = {
     this.pion = p
   }
 
@@ -26,7 +26,7 @@ class Cell() {
     this.pion
   }
 
-  def set_center(c: Point) = {
+  def set_center(c: Point): Unit = {
     this.center = c
   }
 

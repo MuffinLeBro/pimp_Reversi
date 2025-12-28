@@ -68,7 +68,7 @@ class Game extends Config{
     this.displayText()
   }
 
-  def isOver(): Boolean = {
+  def isOver: Boolean = {
     false
   }
 
