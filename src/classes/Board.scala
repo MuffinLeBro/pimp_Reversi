@@ -19,7 +19,7 @@ class Board extends Config{
 
     for(i <- playBoard.indices){
       for(j <- playBoard(i).indices){
-          this.playBoard(i)(j) = new Cell(new Pion(GREEN))
+          this.playBoard(i)(j) = new Cell(new Pion())
       }
     }
 
@@ -31,7 +31,7 @@ class Board extends Config{
     for(y <- MARGIN + RADIUS until BOARD_HEIGHT by RADIUS * 2){
       column = 0
       for(x <- MARGIN + RADIUS until BOARD_WIDTH by RADIUS * 2){
-        this.playBoard(row)(column).set_center(new Point(x, y))  // set the center of each Pion
+        this.playBoard(row)(column).center = new Point(x, y)  // set the center of each Pion
         column += 1
       }
       row += 1

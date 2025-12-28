@@ -3,10 +3,10 @@ package classes
 import java.awt.Color
 
 class Player() {
-  private var color : Color = _
-  private var playing : Boolean = false  //wich player plays player 1 = true, player 2 = false
-  var name: String = _
-  private var score: Int = 0
+  private var _color: Color = _
+  private var playing : Boolean = false  // which player plays player 1 = true, player 2 = false
+  private var _name: String = _
+  private var _score: Int = 0
 
   def this(name: String, c: Color) = {
     this()
@@ -15,11 +15,18 @@ class Player() {
     this.playing = false
   }
 
-  def set_score(s: Int): Unit = {
-    this.score = s
+  def name: String = _name // getter name
+  def name_=(value: String): Unit = { // setter name
+    _name = value
   }
 
-  def get_score(): Int = {
-    this.score
+  def color: Color = _color // getter color
+  def color_=(value: Color): Unit = { // setter color
+    _color = value
+  }
+
+  def score: Int = _score // getter score
+  def score_=(value: Int): Unit = { // setter score
+    _score = value
   }
 }

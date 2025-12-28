@@ -17,10 +17,10 @@ object Shape extends Config{
    * @param cell which contains the circle (Pion)
    */
   def drawDisc(display: FunGraphics, cell: Cell) : Unit = {
-    for (x <- (cell.get_center().x - RADIUS - PADDING) to  (cell.get_center().x + RADIUS - PADDING)) {
-      for (y <- (cell.get_center().y - RADIUS - PADDING) to  (cell.get_center().y + RADIUS - PADDING)) {
-        val distance = (cell.get_center().x - x) * (cell.get_center().x - x) + (cell.get_center().y - y) * (cell.get_center().y - y)
-        if (distance <= (RADIUS - PADDING) * (RADIUS - PADDING)) display.setPixel(x, y, cell.get_pion().get_color())
+    for (x <- (cell.center.x - RADIUS - PADDING) to  (cell.center.x + RADIUS - PADDING)) {
+      for (y <- (cell.center.y - RADIUS - PADDING) to  (cell.center.y + RADIUS - PADDING)) {
+        val distance = (cell.center.x - x) * (cell.center.x - x) + (cell.center.y - y) * (cell.center.y - y)
+        if (distance <= (RADIUS - PADDING) * (RADIUS - PADDING)) display.setPixel(x, y, cell.pion.color)
       }
     }
   }

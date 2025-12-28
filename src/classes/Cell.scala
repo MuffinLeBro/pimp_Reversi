@@ -3,8 +3,8 @@ package classes
 import java.awt.{Color, Point}
 
 class Cell() {
-  private var pion: Pion = new Pion()
-  private var center: Point = _
+  private var _pion: Pion = new Pion()
+  private var _center: Point = _
 
   def this(pion: Pion, center: Point) = {
     this()
@@ -18,20 +18,14 @@ class Cell() {
     this.center = new Point()
   }
 
-  def set_pion(p: Pion): Unit = {
-    this.pion = p
+  def pion: Pion = _pion
+  def pion_=(value: Pion): Unit = {
+    _pion = value
   }
 
-  def get_pion(): Pion = {
-    this.pion
-  }
-
-  def set_center(c: Point): Unit = {
-    this.center = c
-  }
-
-  def get_center(): Point = {
-    this.center
+  def center: Point = _center
+  def center_=(value: Point): Unit = {
+    _center = value
   }
 
 }

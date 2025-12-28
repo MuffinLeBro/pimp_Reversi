@@ -1,21 +1,20 @@
 package classes
 
-import java.awt.{Color, Point}
+import `trait`.Config
 
-class Pion() {
-  private var color: Color = Color.GREEN
+import java.awt.Color
+
+class Pion extends Config {
+  private var _color: Color = GREEN
 
   def this(c: Color) = {
     this()
     this.color = c
   }
 
-  def set_color(c: Color): Unit = {
-    this.color = c
-  }
-
-  def get_color(): Color = {
-    this.color
+  def color: Color = _color
+  def color_= (value: Color): Unit = {
+    _color = value
   }
 }
 
