@@ -48,7 +48,6 @@ class Board extends Config{
   def hasValidMove(player: Player): Boolean = {
     for(i <- this.playBoard.indices){
       for(j <- this.playBoard(i).indices){
-        println(s" ROW: ${i}, COLUMN: ${j}")
         if(this.playBoard(i)(j).pion.color == GREEN){  // if the cell is not yet coloured
           if(this.isValidMove(player, i, j)) return true
         }
@@ -60,8 +59,8 @@ class Board extends Config{
   /**
    *
    * @param player, who plays his turn
-   * @param x, the point coordinate on x
-   * @param y, the point coordinate on y
+   * @param i, the index of line in the playboard
+   * @param j,  the index of column in the playboard
    * @return a boolean if the player has AT LEAST one move on his turn
    */
   private def isValidMove(player: Player, i: Int, j: Int): Boolean = {
