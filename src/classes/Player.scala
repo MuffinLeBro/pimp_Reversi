@@ -4,7 +4,6 @@ import java.awt.Color
 
 class Player() {
   private var _color: Color = _
-  private var playing : Boolean = false  // which player plays player 1 = true, player 2 = false
   private var _name: String = _
   private var _score: Int = 0
 
@@ -12,7 +11,6 @@ class Player() {
     this()
     this.color = c
     this.name = name
-    this.playing = false
   }
 
   def name: String = _name // getter name
@@ -29,4 +27,9 @@ class Player() {
   def score_=(value: Int): Unit = { // setter score
     _score = value
   }
+
+  def can_play(board: Board): Boolean = {
+    board.hasValidMove(this)
+  }
+
 }
