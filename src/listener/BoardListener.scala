@@ -23,7 +23,7 @@ class BoardListener(game: Game) extends MouseAdapter with Config{
 
                   // Manage the sound of good move
                   game.audio_good.play()
-                  Thread.sleep(1000);
+                  Thread.sleep(1000)
                   if(game.audio_good.audioClip.isRunning) game.audio_good.stop()
 
                   game.number_of_switch = 0
@@ -33,7 +33,7 @@ class BoardListener(game: Game) extends MouseAdapter with Config{
                 else{
                   // Manage the sound of bad move
                   game.audio_mistake.play()
-                  Thread.sleep(1000);
+                  Thread.sleep(1000)
                   if(game.audio_mistake.audioClip.isRunning) game.audio_mistake.stop()
                 }
               }
