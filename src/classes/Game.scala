@@ -2,19 +2,31 @@ package classes
 
 import `trait`.Config
 import hevs.graphics.FunGraphics
+import hevs.graphics.utils.GraphicsBitmap
+import listener.{BoardListener, BoardMotionListener}
 import utils.{Dialogs, Shape}
 
 import java.awt.{Color, Font}
+import scala.util.control.Breaks.{break, breakable}
 
 class Game extends Config{
 
   private val GRAPHICS_WIDTH: Int = 1300
-  private val GRAPHICS_HEIGHT: Int = 1000
+  private val GRAPHICS_HEIGHT: Int = 950
   val display: FunGraphics = new FunGraphics(GRAPHICS_WIDTH, GRAPHICS_HEIGHT)
   private var _players: Array[Player] = new Array[Player](2)
   var current_player: Player = _
+  var number_of_switch: Int = 0
   var board: Board = new Board(8, 8)
 
+  // the audio files
+   val audio_tic_toc: Audio = new Audio("/sounds/tictoc.wav")
+   val audio_winner: Audio = new Audio("/sounds/winner.wav")
+   val audio_mistake: Audio = new Audio("/sounds/mistake.wav")
+   val audio_good: Audio = new Audio("/sounds/good.wav")
+
+  // images
+  private val img = new GraphicsBitmap("/img/index.png")
 
   def players: Array[Player] = _players // getter players
   def players_=(value: Array[Player]): Unit = {
@@ -42,55 +54,40 @@ class Game extends Config{
         display.drawLine(x, y, x, this.board.BOARD_HEIGHT)
       }
     }
-  }
-
-  private def paintPion(): Unit = {
-    for(i <- this.board.playBoard.indices){
-      for(j <- this.board.playBoard(i).indices){
-        Shape.drawDisc(display, this.board.playBoard(i)(j))
-      }
-    }
+    this.board.paintFirstPion(display) // paint the 4 first pawns
   }
 
   private def displayText(): Unit = {
-    display.setColor(Color.BLACK)
     for(i <- players.indices){
       this.count_point(this.players(i))
     }
-    val font_name = new Font("Arial", Font.PLAIN, 20)
-    val font_score = new Font("Consolas", Font.PLAIN, 30)
-
-    display.drawString(this.board.BOARD_WIDTH + 100, MARGIN + 60, this.players(0).name.toUpperCase , font_name, null) // name player 1
-    display.drawString(this.board.BOARD_WIDTH + 230, MARGIN + 60, this.players(0).score.toString , font_score, null) // score player 1
+    display.setColor(Color.BLACK)
+    display.drawString(this.board.BOARD_WIDTH + 100, MARGIN + 60, this.players(0).name.toUpperCase , FONT_NAME, null) // name player 1
+    display.drawString(this.board.BOARD_WIDTH + 230, MARGIN + 60, this.players(0).score.toString , FONT_SCORE, null) // score player 1
     display.setColor(Color.BLACK)
     display.drawFilledCircle(this.board.BOARD_WIDTH + 60, MARGIN + 40, 25)
     display.drawLine(this.board.BOARD_WIDTH + 100, MARGIN + 70, 1200, MARGIN + 70)
 
-    display.drawString(this.board.BOARD_WIDTH + 100, MARGIN + 160, this.players(1).name.toUpperCase, font_name, null) // name player 2
-    display.drawString(this.board.BOARD_WIDTH + 230, MARGIN + 160, this.players(1).score.toString, font_score, null) // score player 2
     display.setColor(Color.WHITE)
+    display.drawString(this.board.BOARD_WIDTH + 100, MARGIN + 160, this.players(1).name.toUpperCase, FONT_NAME, null) // name player 2
+    display.drawString(this.board.BOARD_WIDTH + 230, MARGIN + 160, this.players(1).score.toString, FONT_SCORE, null) // score player 2
     display.drawFilledCircle(this.board.BOARD_WIDTH + 60, MARGIN + 140, 25)
-    display.setColor(Color.BLACK)
     display.drawLine(this.board.BOARD_WIDTH + 100, MARGIN + 170, 1200, MARGIN + 170)
   }
 
   def init_game(): Unit = {
     this.displayBoard()
-    this.paintPion()
     this.displayText()
+    this.display.addMouseListener(new BoardListener(this))
+    this.display.addMouseMotionListener(new BoardMotionListener(this))
+    this.audio_tic_toc.play()
   }
 
   def isOver: Boolean = {
-    false
+    this.number_of_switch == 2 || this.board.countEmptyCell() == 0
   }
 
-  def count_possible_shots(): Int = {
-    var count: Int = 0
-
-    count
-  }
-
-   def count_point(player: Player): Unit = {
+   private def count_point(player: Player): Unit = {
     var count: Int = 0
     for(i <- this.board.playBoard.indices){
       for(j <- this.board.playBoard(i).indices){
@@ -101,8 +98,32 @@ class Game extends Config{
   }
 
   def switch_player(): Unit = {
-    for(i <- this.players.indices){
-      if(this.current_player.color != this.players(i).color) this.current_player = this.players(i)
+
+    breakable{
+      for(i <- this.players.indices){
+        if(this.players(i).name != this.current_player.name ){
+          this.current_player = this.players(i)
+          break()
+        }
+      }
     }
+
+  }
+
+  def updateScore(): Unit = {
+    for(i <- this.players.indices){
+      this.count_point(this.players(i))
+    }
+    display.setColor(BACKGROUND)
+    display.drawFillRect(this.board.BOARD_WIDTH + 230, MARGIN + 40, 50, 30)
+    display.drawFillRect(this.board.BOARD_WIDTH + 230, MARGIN + 140, 50, 30)
+    display.setColor(Color.WHITE)
+    display.drawString(this.board.BOARD_WIDTH + 230, MARGIN + 60, this.players(0).score.toString , FONT_SCORE, null)
+    display.drawString(this.board.BOARD_WIDTH + 230, MARGIN + 160, this.players(1).score.toString, FONT_SCORE, null)
+  }
+
+  def updateTurn(index: Int): Unit = {
+    var y = if(index == 0) MARGIN + 60 else MARGIN + 160
+    display.drawTransformedPicture(this.board.BOARD_WIDTH + 50, y, 0, 0.07, img)
   }
 }
