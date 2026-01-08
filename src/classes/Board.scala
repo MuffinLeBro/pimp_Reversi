@@ -155,7 +155,7 @@ class Board extends Config{
 
           breakable{
             var temp_cells: ListBuffer[(Int, Int)] = new ListBuffer[(Int, Int)]
-            while((index_i >= 0 && index_j >= 0) && (index_i < this.playBoard.length && index_j < this.playBoard(index_i).length)){
+            while((index_i >= 0 && index_j >= 0) && (index_i < this.playBoard.length && index_j < this.playBoard(index_i).length)){//Stcoker les index de la board
               temp_cells.prepend((index_i, index_j))
               if(this.playBoard(index_i)(index_j).pion.color == player.color ){
                 cells_to_modify ++= temp_cells
@@ -173,13 +173,25 @@ class Board extends Config{
       }
     }
 
-    for((i, j) <- cells_to_modify.toArray){
+    for((i, j) <- cells_to_modify.toArray){//Afficher les index avec les couleurs respectives noir ou blanc
       Shape.drawDisc(display, this.playBoard(i)(j), player.color)
       this.playBoard(i)(j).pion.color = player.color
     }
 
   }
 
+  /*TODO : Afficher les différentes possibilités de jeu combiner is validMove et applyMove
+   * 1. detecter les pions d'autre couleurs
+   * 2. regarder les cases libres autours ou la couleur de joueur et dans les diagonales/lignes/colonnes
+   * 3. afficher un disque non rempli de couleur clair pour les coups valide
+   */
+
+  def AvaibleMove(display: FunGraphics, player: Player, i: Int, j: Int): Unit = {
+      val cells_playable : ListBuffer[(Int,Int)] = new ListBuffer[(Int, Int)]
+
+  }
+
+  //TODO : Animaiton lors de changements de pion
 
 
 }

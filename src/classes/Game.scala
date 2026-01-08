@@ -33,7 +33,6 @@ class Game extends Config{
     _players = value
   }
 
-
   def askPlayerName(): Unit = {
     for(i <- players.indices){
       val name: String = Dialogs.getString(s"PLAYER ${i + 1}" )
@@ -107,7 +106,6 @@ class Game extends Config{
         }
       }
     }
-
   }
 
   def updateScore(): Unit = {
