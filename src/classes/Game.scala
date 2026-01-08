@@ -26,6 +26,7 @@ class Game extends Config{
    val audio_good: Audio = new Audio("/sounds/good.wav")
   // images
   private val img = new GraphicsBitmap("/img/index.png")
+  private val img_crown = new GraphicsBitmap("/img/crown.png")
 
   def players: Array[Player] = _players // getter players
   def players_=(value: Array[Player]): Unit = {
@@ -149,12 +150,16 @@ class Game extends Config{
     this.askPlayerName()
     this.init_game()
     this.current_player = this.players(0)
+    this.updateTurn(0)
     this.startTurn()
   }
 
   private def end(): Unit = {
     this.audio_tic_toc.stop()
     this.audio_winner.play()
+    var max_score = this.players.map(_.score).max
+    var winner: Player = this.players.filter(_.score == max_score)(0)
+    this.addCrownToWinner(this.players.indexOf(winner))
   }
 
   def startTurn(): Unit = {
@@ -178,5 +183,10 @@ class Game extends Config{
 
   def disableClick(): Unit = {
     this.click_enable = false
+  }
+
+  def addCrownToWinner(index: Int): Unit = {
+    var y = if(index == 0) MARGIN + 40 else MARGIN + 140
+    display.drawTransformedPicture(this.board.BOARD_WIDTH + 300, y, 0.1, 0.1, this.img_crown)
   }
 }
