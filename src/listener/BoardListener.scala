@@ -13,7 +13,6 @@ class BoardListener(game: Game) extends MouseAdapter with Config{
     if(!game.click_enable) return
 
     else{
-      game.disableClick()
       val event = e
       // Get the mouse position from the event
       val posx = event.getX
@@ -23,6 +22,7 @@ class BoardListener(game: Game) extends MouseAdapter with Config{
           for(j <- game.board.playBoard(i).indices){
             if(game.board.playBoard(i)(j).pion.color == GREEN && (Math.abs(posx - game.board.playBoard(i)(j).center.getX) <= CELL_DIMENSION / 2) && (Math.abs(posy - game.board.playBoard(i)(j).center.getY) <= CELL_DIMENSION / 2)){
               if(game.board.isValidMove(game.current_player, i, j)){
+                game.disableClick()
                 game.board.applyMove(game.display, game.current_player, i, j)
 
                 game.number_of_switch = 0
@@ -44,6 +44,9 @@ class BoardListener(game: Game) extends MouseAdapter with Config{
             }
           }
         }
+      }
+      else{
+        game.startTurn()
       }
     }
   }
