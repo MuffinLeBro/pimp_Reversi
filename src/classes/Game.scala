@@ -11,6 +11,7 @@ import scala.util.control.Breaks.{break, breakable}
 
 class Game extends Config{
 
+  private var _click_enable: Boolean = false
   private val GRAPHICS_WIDTH: Int = 1300
   private val GRAPHICS_HEIGHT: Int = 950
   val display: FunGraphics = new FunGraphics(GRAPHICS_WIDTH, GRAPHICS_HEIGHT)
@@ -18,13 +19,11 @@ class Game extends Config{
   var current_player: Player = _
   var number_of_switch: Int = 0
   var board: Board = new Board(8, 8)
-
   // the audio files
-   val audio_tic_toc: Audio = new Audio("/sounds/tictoc.wav")
-   val audio_winner: Audio = new Audio("/sounds/winner.wav")
+   private val audio_tic_toc: Audio = new Audio("/sounds/tictoc.wav")
+   private val audio_winner: Audio = new Audio("/sounds/winner.wav")
    val audio_mistake: Audio = new Audio("/sounds/mistake.wav")
    val audio_good: Audio = new Audio("/sounds/good.wav")
-
   // images
   private val img = new GraphicsBitmap("/img/index.png")
 
@@ -33,6 +32,10 @@ class Game extends Config{
     _players = value
   }
 
+  def click_enable: Boolean = _click_enable
+  def click_enable_=(value: Boolean): Unit = {
+    _click_enable = value
+  }
 
   def askPlayerName(): Unit = {
     for(i <- players.indices){
@@ -103,11 +106,11 @@ class Game extends Config{
       for(i <- this.players.indices){
         if(this.players(i).name != this.current_player.name ){
           this.current_player = this.players(i)
+          this.updateTurn(this.players.indexOf(this.current_player))
           break()
         }
       }
     }
-
   }
 
   def updateScore(): Unit = {
@@ -123,7 +126,57 @@ class Game extends Config{
   }
 
   def updateTurn(index: Int): Unit = {
-    var y = if(index == 0) MARGIN + 60 else MARGIN + 160
-    display.drawTransformedPicture(this.board.BOARD_WIDTH + 50, y, 0, 0.07, img)
+    // to display
+    var y = if(index == 0) MARGIN + 40 else MARGIN + 140
+    display.setColor(BACKGROUND)
+    display.drawFillRect(this.board.BOARD_WIDTH + 50, y - 5, 45, 50)
+    if(!this.isOver){
+      display.setColor(Color.ORANGE)
+      display.drawFilledCircle(this.board.BOARD_WIDTH + 58, y - 4, 35)
+    }
+    display.setColor(if(index == 0) Color.BLACK else Color.WHITE)
+    display.drawFilledCircle(this.board.BOARD_WIDTH + 63, y, 25)
+
+    // to hide
+    var y_to_hide = if(index == 0) MARGIN + 140 else MARGIN + 40
+    display.setColor(BACKGROUND)
+    display.drawFillRect(this.board.BOARD_WIDTH + 50, y_to_hide - 5, 45, 50)
+    display.setColor(if(index == 0) Color.WHITE else Color.BLACK)
+    display.drawFilledCircle(this.board.BOARD_WIDTH + 63, y_to_hide, 25)
+  }
+
+  def start(): Unit = {
+    this.askPlayerName()
+    this.init_game()
+    this.current_player = this.players(0)
+    this.startTurn()
+  }
+
+  private def end(): Unit = {
+    this.audio_tic_toc.stop()
+    this.audio_winner.play()
+  }
+
+  def startTurn(): Unit = {
+    if (this.isOver) {  // if the game is over
+      this.end()
+      return
+    }
+    if(!this.current_player.can_play(this.board)){ // if the current player can play
+      this.number_of_switch += 1
+      this.switch_player()
+      startTurn()
+    }
+    else{
+      this.enableClick()
+    }
+  }
+
+  private def enableClick(): Unit = {
+    this.click_enable = true
+  }
+
+  def disableClick(): Unit = {
+    this.click_enable = false
   }
 }
