@@ -57,7 +57,6 @@ class BoardListener(game: Game) extends MouseAdapter with Config{
             game.display.frontBuffer.synchronized {
               game.restart()
             }
-            println("RESTART")
             game.audio_restart.play()
             Thread.sleep(1000)
             if(game.audio_restart.audioClip.isRunning) game.audio_restart.stop()
