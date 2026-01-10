@@ -51,8 +51,8 @@ class Board extends Config{
     }
 
     this.playBoard(playBoard.length / 2  - 1)(playBoard.length / 2 - 1) = new Cell(new Pion(Color.WHITE)) // Pion haut à gauche
-    this.playBoard(playBoard.length / 2)(playBoard.length / 2 - 1) = new Cell(new Pion(Color.BLACK)) // Pion haut à droite
-    this.playBoard(playBoard.length / 2  - 1)(playBoard.length / 2) = new Cell(new Pion(Color.BLACK)) // Pion bas à gauche
+    this.playBoard(playBoard.length / 2)(playBoard.length / 2 - 1) = new Cell(new Pion(BLACK)) // Pion haut à droite
+    this.playBoard(playBoard.length / 2  - 1)(playBoard.length / 2) = new Cell(new Pion(BLACK)) // Pion bas à gauche
     this.playBoard(playBoard.length / 2)(playBoard.length / 2) = new Cell(new Pion(Color.WHITE)) // Pion bas à droite
 
     for(y <- MARGIN + RADIUS until BOARD_HEIGHT by RADIUS * 2){
@@ -177,7 +177,6 @@ class Board extends Config{
       Shape.drawDisc(display, this.playBoard(i)(j), player.color)
       this.playBoard(i)(j).pion.color = player.color
     }
-
   }
 
 

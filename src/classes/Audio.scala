@@ -22,7 +22,7 @@ class Audio(path: String){
     try {
       if (!audioClip.isOpen) audioClip.open()
       audioClip.stop()
-      if(path == "/sounds/tictoc.wav"){
+      if(path == "/sounds/tictoc.wav" || path == "/sounds/intro.wav"){
         audioClip.loop(Clip.LOOP_CONTINUOUSLY) // to loop a sound
       }
       audioClip.start()
