@@ -3,7 +3,7 @@ package classes
 import `trait`.Config
 import hevs.graphics.FunGraphics
 import hevs.graphics.utils.GraphicsBitmap
-import listener.{BoardListener, BoardMotionListener}
+import listener.{BoardListener, BoardMotionListener, LoadListener}
 import utils.{Dialogs, Shape}
 
 import java.awt.{Color, DisplayMode, Font}
@@ -29,6 +29,8 @@ class Game extends Config{
   val audio_mistake: Audio = new Audio("/sounds/mistake.wav")
   val audio_good: Audio = new Audio("/sounds/good.wav")
   val audio_intro: Audio = new Audio("/sounds/intro.wav")
+  val audio_restart: Audio = new Audio("/sounds/restart.wav")
+  val audio_many_flip: Audio = new Audio("/sounds/many_flip.wav")
   // images
   private val img_crown = new GraphicsBitmap("/img/crown.png")
   private val img_pion = new GraphicsBitmap("/img/pion.png")
@@ -118,7 +120,7 @@ class Game extends Config{
   def loadGame(): Unit = {
     this.displayScreenloader()
     this.audio_intro.play()
-    this.display.addMouseListener(new BoardListener(this))
+    this.display.addMouseListener(new LoadListener(this))
   }
 
   private def displayScreenloader(): Unit = {

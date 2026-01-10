@@ -2,7 +2,6 @@ package classes
 
 import `trait`.Config
 import hevs.graphics.FunGraphics
-import listener.BoardListener
 import utils.Shape
 
 import java.awt.{Color, Point}
@@ -13,7 +12,6 @@ class Board extends Config{
   private var _playBoard: Array[Array[Cell]] = _  // Main board
   private var _BOARD_WIDTH: Int = 0
   private var _BOARD_HEIGHT: Int = 0
-  var listener: BoardListener = _
   private val directions: Array[(Int, Int)] = Array(   // all directions to check for possible moves
     (-1,-1), (0,-1), (1,-1),
     (-1,0),         (1,0),
@@ -136,13 +134,13 @@ class Board extends Config{
   }
 
   /**
-   * Change all cell pawns to a new color after a move
+   * Change all cell pawns to a new color after a move and return the number of flip
    * @param display, the FunGraphics
    * @param player, the current player
    * @param i, the index of line in the playboard
    * @param j, the index of column in the playboard
    */
-  def applyMove(display: FunGraphics, player: Player, i: Int, j: Int): Unit = {
+  def applyMove(display: FunGraphics, player: Player, i: Int, j: Int): Int = {
     val cells_to_modify: ListBuffer[(Int, Int)] = new ListBuffer[(Int, Int)]
     cells_to_modify.prepend((i, j))
 
@@ -177,6 +175,7 @@ class Board extends Config{
       Shape.drawDisc(display, this.playBoard(i)(j), player.color)
       this.playBoard(i)(j).pion.color = player.color
     }
+    cells_to_modify.size // number of flip
   }
 
 
