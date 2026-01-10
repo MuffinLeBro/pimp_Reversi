@@ -9,10 +9,8 @@ trait Config {
   val MARGIN: Int = 70
   val PADDING: Int = 10
 
-//  val GREEN: Color = new Color(79, 152, 46)
   val BLACK: Color = new Color(13, 13, 13)
   val GREEN: Color = new Color(54, 95, 38)
-//  val LINE_COLOR = new Color(40, 72, 29)
   val LINE_COLOR = Color.BLACK
   val BACKGROUND = new Color(67, 130, 60)
 
@@ -25,6 +23,7 @@ trait Config {
   val CUSTOM_FONT_AUDIOWIDE: Font = Font.createFont(Font.TRUETYPE_FONT, audiowide)
   val CUSTOM_FONT_LOBSTER: Font = Font.createFont(Font.TRUETYPE_FONT, lobster)
 
+  // All text positions
   val POSITION_BUTTON_PLAY: (Int, Int) = (200, 650)
   val POSITION_PION: (Int, Int) = (650, 550)
   val POSITION_TEXT_PLAY: (Int, Int) = (130, 670)
