@@ -4,18 +4,17 @@ import java.awt.{Color, Font}
 import java.io.File
 
 trait Config {
+  // Dimensions and measures
   val RADIUS: Int = 50
   val CELL_DIMENSION: Int = 100
   val MARGIN: Int = 70
   val PADDING: Int = 10
 
+  // Color
   val BLACK: Color = new Color(13, 13, 13)
   val GREEN: Color = new Color(54, 95, 38)
   val LINE_COLOR: Color = Color.BLACK
   val BACKGROUND = new Color(67, 130, 60)
-
-  val FONT_SCORE = new Font("Consolas", Font.BOLD, 30)
-  val FONT_NAME = new Font("Arial", Font.BOLD, 22)
 
   // Load the font from a file
   private val audiowide: File = new File("src/font/Audiowide-Regular.ttf")
