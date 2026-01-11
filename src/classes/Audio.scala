@@ -22,7 +22,7 @@ class Audio(path: String){
     try {
       if (!audioClip.isOpen) audioClip.open()
       audioClip.stop()
-      if(path == "/sounds/tictoc.wav"){
+      if(path == "/sounds/tictoc.wav" || path == "/sounds/intro.wav"){
         audioClip.loop(Clip.LOOP_CONTINUOUSLY) // to loop a sound
       }
       audioClip.start()
@@ -38,6 +38,7 @@ class Audio(path: String){
       if (audioClip.isOpen) {
         audioClip.stop()
         audioClip.setFramePosition(0); // important if we want to do a stop and play after action
+        audioClip.setMicrosecondPosition(0)
       }
     } catch {
       case e: Exception =>
