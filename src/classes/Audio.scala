@@ -38,6 +38,7 @@ class Audio(path: String){
       if (audioClip.isOpen) {
         audioClip.stop()
         audioClip.setFramePosition(0); // important if we want to do a stop and play after action
+        audioClip.setMicrosecondPosition(0)
       }
     } catch {
       case e: Exception =>
