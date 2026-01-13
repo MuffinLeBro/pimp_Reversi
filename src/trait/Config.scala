@@ -15,6 +15,7 @@ trait Config {
   val GREEN: Color = new Color(54, 95, 38)
   val LINE_COLOR: Color = Color.BLACK
   val BACKGROUND = new Color(67, 130, 60)
+  val MESSAGE_SKIP_WIN = new Color(242, 223, 179)
 
   // Load the font from a file
   private val audiowide: File = new File("src/font/Audiowide-Regular.ttf")
