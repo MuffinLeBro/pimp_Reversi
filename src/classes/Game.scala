@@ -6,7 +6,7 @@ import hevs.graphics.utils.GraphicsBitmap
 import listener.{BoardListener, BoardMotionListener, LoadListener}
 import utils.{Dialogs, Shape}
 
-import java.awt.{Color, DisplayMode, Font}
+import java.awt.{Color, DisplayMode, Font, FontMetrics, Label}
 import scala.util.control.Breaks.{break, breakable}
 
 class Game extends Config{
@@ -35,6 +35,8 @@ class Game extends Config{
   private val img_pion = new GraphicsBitmap("/img/pion.png")
   private val img_bg_button = new GraphicsBitmap("/img/Button_PLAY.png")
   private val img_grille = new GraphicsBitmap("/img/grille.png")
+  private val img_skip = new GraphicsBitmap("/img/skip.png")
+  private val img_draw = new GraphicsBitmap("/img/draw.png")
 
   def players: Array[Player] = _players // getter players
   def players_=(value: Array[Player]): Unit = {
@@ -61,7 +63,7 @@ class Game extends Config{
     _isStarted = value
   }
 
-  def askPlayerName(): Unit = {
+  private def askPlayerName(): Unit = {
     for(i <- players.indices){
       val name: String = Dialogs.getString(s"PLAYER ${i + 1}" )
       this.players(i) = if (i == 0) new Player(name, BLACK) else new Player(name, Color.WHITE)
@@ -108,14 +110,14 @@ class Game extends Config{
       this.count_point(this.players(i))
     }
     display.setColor(BLACK)
-    display.drawString(this.board.BOARD_WIDTH + 100, MARGIN + 60, this.players(0).name.toUpperCase , CUSTOM_FONT_AUDIOWIDE.deriveFont(20f), null) // name player 1
+    display.drawString(this.board.BOARD_WIDTH + 100, MARGIN + 60, this.truncateWithEllipsis(this.players(0).name.toUpperCase, 10) , CUSTOM_FONT_AUDIOWIDE.deriveFont(20f), null) // name player 1
     display.drawString(this.board.BOARD_WIDTH + 280, MARGIN + 60, this.players(0).score.toString , CUSTOM_FONT_AUDIOWIDE.deriveFont(20f), null) // score player 1
     display.setColor(BLACK)
     display.drawFilledCircle(this.board.BOARD_WIDTH + 60, MARGIN + 40, 25)
     display.drawLine(this.board.BOARD_WIDTH + 100, MARGIN + 70, 1200, MARGIN + 70)
 
     display.setColor(Color.WHITE)
-    display.drawString(this.board.BOARD_WIDTH + 100, MARGIN + 160, this.players(1).name.toUpperCase, CUSTOM_FONT_AUDIOWIDE.deriveFont(20f), null) // name player 2
+    display.drawString(this.board.BOARD_WIDTH + 100, MARGIN + 160, this.truncateWithEllipsis(this.players(1).name.toUpperCase, 10), CUSTOM_FONT_AUDIOWIDE.deriveFont(20f), null) // name player 2
     display.drawString(this.board.BOARD_WIDTH + 280, MARGIN + 160, this.players(1).score.toString, CUSTOM_FONT_AUDIOWIDE.deriveFont(20f), null) // score player 2
     display.drawFilledCircle(this.board.BOARD_WIDTH + 60, MARGIN + 140, 25)
     display.drawLine(this.board.BOARD_WIDTH + 100, MARGIN + 170, 1200, MARGIN + 170)
@@ -123,7 +125,7 @@ class Game extends Config{
 
   def loadGame(): Unit = {
     this.displayScreenloader()
-//    this.audio_intro.play()
+    this.audio_intro.play()
     this.display.addMouseListener(new LoadListener(this))
   }
 
@@ -143,7 +145,7 @@ class Game extends Config{
     this.display.drawString(800, 750, "Classic", CUSTOM_FONT_LOBSTER.deriveFont(Font.BOLD, 140f), null)
   }
 
-  def init_game(): Unit = {
+  private def init_game(): Unit = {
     this.displayBoard()
     this.displayText()
     this.display.addMouseListener(new BoardListener(this))
@@ -151,7 +153,7 @@ class Game extends Config{
     this.audio_tic_toc.play()
   }
 
-  def isOver: Boolean = {
+  private def isOver: Boolean = {
     this.number_of_switch == 2 || this.board.countEmptyCell() == 0
   }
 
@@ -190,7 +192,7 @@ class Game extends Config{
     display.drawString(this.board.BOARD_WIDTH + 280, MARGIN + 160, this.players(1).score.toString, CUSTOM_FONT_AUDIOWIDE.deriveFont(20f), null)
   }
 
-  def updateTurn(index: Int): Unit = {
+  private def updateTurn(index: Int): Unit = {
       // to display
       var y = if (index == 0) MARGIN + 40 else MARGIN + 140
       display.setColor(BACKGROUND)
@@ -240,9 +242,13 @@ class Game extends Config{
   private def end(): Unit = {
     this.audio_tic_toc.stop()
     this.audio_winner.play()
-    var max_score = this.players.map(_.score).max
-    var winner: Player = this.players.filter(_.score == max_score)(0)
-    if(!this.isDraw) this.addCrownToWinner(this.players.indexOf(winner)) // if DRAW
+    if(!this.isDraw) { // if there is a winner
+      this.addCrownToWinner(this.players.indexOf(this.getWinner))
+      this.showMessageWinner(this.current_player.name)
+    }
+    else{
+      this.showMessageDraw()
+    }
 
     // BUTTON REPLAY THE GAME
     display.setColor(BACKGROUND)
@@ -250,6 +256,7 @@ class Game extends Config{
     display.setColor(Color.WHITE)
     this.display.drawTransformedPicture(1100, 700, 0, 0.5, this.img_bg_button)
     this.display.drawString(POSITION_TEXT_RESTART_REPLAY._1, POSITION_TEXT_RESTART_REPLAY._2, "Replay", CUSTOM_FONT_AUDIOWIDE.deriveFont(Font.BOLD, 25f), null)
+
   }
 
   def startTurn(): Unit = {
@@ -257,10 +264,12 @@ class Game extends Config{
     if (this.isOver) { // if the game is over
       this.end()
       this.enableClick()
+      this.showMessageEndGame()
       return
     }
     if(!this.current_player.can_play(this.board)){ // if the current player can play
       this.number_of_switch += 1
+      showMessageSkipTurn(this.current_player.name)
       this.switch_player()
       startTurn()
     }
@@ -282,5 +291,67 @@ class Game extends Config{
 
   private def isDraw: Boolean = {
    this.players(0).score == this._players(1).score
+  }
+
+  private def showMessageSkipTurn(playerName: String): Unit = {
+    val approxCharWidth = 20 // average character width
+    val textWidth = if(playerName.length < 20) playerName.length * approxCharWidth else 20 * 20
+    val center = (this.GRAPHICS_WIDTH - this.board.BOARD_WIDTH) / 2
+    val textX = center + this.board.BOARD_WIDTH - (textWidth / 2)
+
+    display.drawTransformedPicture(1090, 420, 0, 1, this.img_skip)
+    display.setColor(Color.ORANGE)
+    this.display.drawString(1010, 350, " No move!!", CUSTOM_FONT_AUDIOWIDE.deriveFont(Font.BOLD, 30f), null)
+    display.setColor(Color.WHITE)
+    display.setColor(MESSAGE_SKIP_WIN)
+    this.display.drawString(
+      if(playerName.length < 8) textX
+      else if(playerName.length >= 8 && playerName.length <= 9) textX + 5
+      else if(playerName.length > 9 && playerName.length <= 15) textX + 5
+      else textX + 30,
+      500, s"${truncateWithEllipsis(playerName, 17)}", CUSTOM_FONT_AUDIOWIDE.deriveFont(Font.BOLD, 32f), null)
+  }
+
+  private def showMessageWinner(playerName: String): Unit = {
+    val approxCharWidth = 20 // average character width
+    val textWidth = if(playerName.length < 20) playerName.length * approxCharWidth else 20 * 20
+    val center = (this.GRAPHICS_WIDTH - this.board.BOARD_WIDTH) / 2
+    val textX = center + this.board.BOARD_WIDTH - (textWidth / 2)
+
+    this.display.drawTransformedPicture(1090, 450, 0, 0.3, this.img_crown)
+    display.setColor(MESSAGE_SKIP_WIN)
+    this.display.drawString(
+      if(playerName.length < 8) textX
+      else if(playerName.length >= 8 && playerName.length <= 9) textX + 5
+      else if(playerName.length > 9 && playerName.length <= 15) textX + 5
+      else textX + 30,
+      550, s"${truncateWithEllipsis(playerName, 17)}", CUSTOM_FONT_AUDIOWIDE.deriveFont(Font.BOLD, 32f), null)
+
+    display.setColor(Color.ORANGE)
+    this.display.drawString(1025, 350, "Victory", CUSTOM_FONT_LOBSTER.deriveFont(Font.BOLD, 40f), null)
+  }
+
+  private def showMessageDraw(): Unit = {
+    this.display.drawTransformedPicture(1090, 450, 0, 0.8, this.img_draw)
+    display.setColor(MESSAGE_SKIP_WIN)
+    this.display.drawString(1020, 550, "No winner", CUSTOM_FONT_AUDIOWIDE.deriveFont(Font.BOLD, 32f), null)
+
+    display.setColor(Color.ORANGE)
+    this.display.drawString(1060, 350, "Draw", CUSTOM_FONT_LOBSTER.deriveFont(Font.BOLD, 40f), null)
+  }
+
+  private def truncateWithEllipsis(input: String, maxLength: Int): String = {
+    if (input.length <= maxLength) input
+    else input.take(maxLength - 3) + "..."
+  }
+
+  private def getWinner: Player = {
+    var max_score = this.players.map(_.score).max
+    this.players.filter(_.score == max_score)(0)
+  }
+
+  private def showMessageEndGame(): Unit = {
+    display.setColor(Color.ORANGE)
+    this.display.drawString(350, 470, "End game !!", CUSTOM_FONT_AUDIOWIDE.deriveFont(Font.BOLD, 40f), null)
   }
 }
