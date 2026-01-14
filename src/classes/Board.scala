@@ -5,6 +5,7 @@ import hevs.graphics.FunGraphics
 import listener.BoardListener
 import utils.Shape
 
+import java.awt
 import java.awt.{Color, Point}
 import scala.collection.mutable.ListBuffer
 import scala.util.control.Breaks.{break, breakable}
@@ -177,21 +178,16 @@ class Board extends Config{
       Shape.drawDisc(display, this.playBoard(i)(j), player.color)
       this.playBoard(i)(j).pion.color = player.color
     }
-
   }
 
-  /*TODO : Afficher les différentes possibilités de jeu combiner is validMove et applyMove
-   * 1. detecter les pions d'autre couleurs
-   * 2. regarder les cases libres autours ou la couleur de joueur et dans les diagonales/lignes/colonnes
-   * 3. afficher un disque non rempli de couleur clair pour les coups valide
-   */
-
-  def AvaibleMove(display: FunGraphics, player: Player, i: Int, j: Int): Unit = {
-      val cells_playable : ListBuffer[(Int,Int)] = new ListBuffer[(Int, Int)]
-
+  def showPlayableMoves(display: FunGraphics, player: Player): Unit = {
+    for(i <- this.playBoard.indices; j <- this.playBoard(i).indices) {
+      if(this.playBoard(i)(j).pion.color == GREEN){
+        Shape.drawDisc(display, this.playBoard(i)(j), GREEN)
+        if(isValidMove(player, i, j)) {
+          Shape.drawDisc(display, this.playBoard(i)(j), YELLOW)
+        }
+      }
+    }
   }
-
-  //TODO : Animaiton lors de changements de pion
-
-
 }

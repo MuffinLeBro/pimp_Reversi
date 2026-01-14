@@ -25,6 +25,7 @@ object Shape extends Config{
     }
   }
 
+
   /**
    *
    * @param display, the FunGraphics

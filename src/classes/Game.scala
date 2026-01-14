@@ -168,6 +168,7 @@ class Game extends Config{
       startTurn()
     }
     else{
+      board.showPlayableMoves(display,current_player)
       this.enableClick()
     }
   }

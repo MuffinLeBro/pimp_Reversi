@@ -7,12 +7,15 @@ trait Config {
   val CELL_DIMENSION: Int = 100
   val MARGIN: Int = 70
   val PADDING: Int = 10
+  val HELPRADUIS : Int = 20
 
   val GREEN: Color = new Color(79, 152, 46)
 //  val GREEN: Color = new Color(54, 95, 38)
+  val YELLOW : Color = new Color(255,215,0)
   val LINE_COLOR = new Color(40, 72, 29)
   val BACKGROUND = new Color(64, 125, 35)
 //  val BACKGROUND = new Color(76, 75, 75)
+
 
   val FONT_SCORE = new Font("Consolas", Font.BOLD, 30)
   val FONT_NAME = new Font("Arial", Font.BOLD, 22)
