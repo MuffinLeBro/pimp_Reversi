@@ -23,10 +23,29 @@ and “trapping” as many of your opponent's pieces as possible. When the board
 There are two ways to end the game: 
 1. There are no more free squares and the player with the most pieces of their color wins the game.
 2. If neither player can make a move, the player with the most pieces is declared the winner.
-<img width="1284" height="919" alt="image" src="https://github.com/user-attachments/assets/ea4470ef-3020-479e-88bb-e2c35753c7af" />
+<img width="1264" height="899" alt="image (3)" src="https://github.com/user-attachments/assets/6f50a30b-a76b-49c2-8a37-94ab1c619634" />
+
 
 # Code structure
 ## In folder "src"
+
+We have listed the files according to their usefulness.
+
+- animation:  here you will find the file that animates the color change of the piece
+
+- class: we have stored all the information concerning the “objects” that we have used, whether for managing the players, the sound, or each square of the othelier.  
+
+- Font: here you will find all the fonts used in this project, such as the names of the players and the score.
+
+- game: contains the executable files for our project.
+
+- img: contains all images used in the project.
+
+- listener: contains all detections made by users.
+
+- sounds: contains all the soundtracks used for the project.
+
+- utilis: contains the companion objects for the project.
 
 
 # Development team:
