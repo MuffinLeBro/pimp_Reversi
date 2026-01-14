@@ -47,6 +47,11 @@ We have listed the files according to their usefulness.
 
 - utilis: contains the companion objects for the project.
 
+## Used library
+
+- FunGraphics-1.5.20.jar: This library is the main one for the project; it allows all graphic elements related to the project to be displayed.
+- Input.scala: This library allows us to take into account user interactions, particularly clicks.
+- TextTools.scala: This library allows us to take into account the text entered by the user. It is used at the beginning of our project when we need to enter the names of the two players.
 
 # Development team:
 - Adrien Gaillard: adrien.gaillard@students.hevs.ch
