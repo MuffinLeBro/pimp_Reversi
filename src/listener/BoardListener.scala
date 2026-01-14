@@ -32,6 +32,7 @@ class BoardListener(game: Game) extends MouseAdapter with Config{
                     game.displayText()
                     game.updateScore()
                     game.switch_player()
+                    game.board.showPlayableMoves(game.display,game.current_player)
                   }
                   // FPS sync
                   game.display.syncGameLogic(60)

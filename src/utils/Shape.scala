@@ -22,6 +22,7 @@ object Shape extends Config{
     display.drawFilledOval(cell.center.x - RADIUS + PADDING , cell.center.y - RADIUS + PADDING, (RADIUS-PADDING) * 2, (RADIUS-PADDING) * 2)
   }
 
+
   /**
    *
    * @param display, the FunGraphics

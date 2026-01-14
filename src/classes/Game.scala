@@ -17,7 +17,6 @@ class Game extends Config{
 
   private val GRAPHICS_WIDTH: Int = 1300
   private val GRAPHICS_HEIGHT: Int = 950
-//  private var _display: FunGraphics = _
 
   private var _display: FunGraphics = new FunGraphics(GRAPHICS_WIDTH, GRAPHICS_HEIGHT)
   private var _players: Array[Player] = new Array[Player](2)
@@ -273,7 +272,10 @@ class Game extends Config{
       this.switch_player()
       startTurn()
     }
-    else this.enableClick()
+    else{
+      board.showPlayableMoves(display,current_player)
+      this.enableClick()
+    }
   }
 
   private def enableClick(): Unit = {
