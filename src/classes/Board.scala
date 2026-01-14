@@ -5,6 +5,7 @@ import animation.DiscAnimation
 import hevs.graphics.FunGraphics
 import utils.Shape
 
+import java.awt
 import java.awt.{Color, Point}
 import scala.collection.mutable.ListBuffer
 import scala.util.control.Breaks.{break, breakable}
@@ -180,6 +181,17 @@ class Board extends Config{
     val anim = new DiscAnimation(game, display, this.playBoard, player.color, cells_to_modify.toArray)
     anim.start()
     cells_to_modify.size // number of flip
+  }
+
+  def showPlayableMoves(display: FunGraphics, player: Player): Unit = {
+    for(i <- this.playBoard.indices; j <- this.playBoard(i).indices) {
+      if(this.playBoard(i)(j).pion.color == GREEN){
+        Shape.drawDisc(display, this.playBoard(i)(j), GREEN)
+        if(isValidMove(player, i, j)) {
+          Shape.drawDisc(display, this.playBoard(i)(j), YELLOW)
+        }
+      }
+    }
   }
 
 

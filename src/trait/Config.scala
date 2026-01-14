@@ -9,12 +9,15 @@ trait Config {
   val CELL_DIMENSION: Int = 100
   val MARGIN: Int = 70
   val PADDING: Int = 10
+  val HELPRADUIS : Int = 20
 
   // Color
   val BLACK: Color = new Color(13, 13, 13)
   val GREEN: Color = new Color(54, 95, 38)
+  val YELLOW : Color = new Color(255,215,0)
   val LINE_COLOR: Color = Color.BLACK
   val BACKGROUND = new Color(67, 130, 60)
+  val MESSAGE_SKIP_WIN = new Color(242, 223, 179)
 
   // Load the font from a file
   private val audiowide: File = new File("src/font/Audiowide-Regular.ttf")
