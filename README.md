@@ -1,34 +1,34 @@
 # Introduction
 
-Notre jeu s'agit tout simplement d'un reversi ou aussi appelé Othello. La différence entre les 2 noms est que reversi est un nom libre de droit et open source alors que le nom Othello est un nom déposé par un japonais en 1971. 
-Le reversi est né assez tard aux alentours des années 1880, sous l'impulsion des anglais L. Waterman et JW. Mollett. 
-Il apparaît comme le premier jeu qui a utilisé les prinicpes de retournements de pions. Le jeu consiste à jouer à tour de role 
-et "d'emprisonner" le maximum de pions adverse. Quand la grille est complète le joueur avec le plus de pion de sa couleur gagne.
+Our game is simply Reversi, also known as Othello. The difference between the two names is that Reversi is a royalty-free, open-source name, while Othello is a name registered by a Japanese company in 1971. 
+Reversi was invented relatively late, around the 1880s, by Englishmen L. Waterman and JW. Mollett. 
+It appears to be the first game to have used the principle of flipping pieces. The game consists of taking turns 
+and “trapping” as many of your opponent's pieces as possible. When the board is full, the player with the most pieces of their color wins.
 
 (Source : https://fr.wikipedia.org/wiki/Othello_(jeu))
-# Mode d'emploi : 
-## Début de la partie
-1. Au départ, 4 pions sont disposé au center de l'othellier 2 blancs et 2 noirs.
+#  Instructions:
+## Starting the game
+1. At the start, four pieces are placed in the center of the board: two white and two black.
 <img width="300" height="300" alt="Capture d’écran 2026-01-14 093123" src="https://github.com/user-attachments/assets/7b7e2931-c28c-4aa8-bcfd-36289a665a40" />
 
-## Déroulement de la partie
-1. Le joueur qui a les pions noirs commencent toujours les parties.
-2. A tour de rôle chaque joueur est tenu de capturer le maximum de pion(s) adverse(s).
+## How to play
+1. The player with the black pieces always starts the game.
+2. Each player takes turns trying to capture as many of their opponent's pieces as possible.
 
-   Pour la capture des pions arrive lorsqu'un j
-4. Il peut les capturer en ligne,en colonnes, en diagonale ou alors les 3 en même temps.
-5. Lorsqu'un joueur n'a pas de possibilité de capturer des pions de couleurs opposée il est forcé de passé son tour.
+   A piece is captured when a player places one of their pieces at the end of a line of their opponent's pieces. This is provided that the other end is occupied by a piece of the same color as the player's.
+4. They can be captured in rows, columns, diagonals, or all three at the same time.
+5. When a player has no opportunity to capture pieces of the opposite color, they are forced to pass their turn.
    
-## Fin de la partie
-Il y a 2 solutions de fin de partie : 
-1. Il n'y a plus de case de libre et le joueur qui a le plus de pions de sa couleur gagne le jeu.
-2. Si aucun des 2 joueurs ne peuvent jouer alors le joueur avec le plus de pion et déclaré vainqueur.
-
+## End of the game
+There are two ways to end the game: 
+1. There are no more free squares and the player with the most pieces of their color wins the game.
+2. If neither player can make a move, the player with the most pieces is declared the winner.
 <img width="1284" height="919" alt="image" src="https://github.com/user-attachments/assets/ea4470ef-3020-479e-88bb-e2c35753c7af" />
 
-# structure du code 
+# Code structure
+## In folder "src"
 
 
-# Equipe de développement : 
-- Adrien Gaillard : adrien.gaillard@students.hevs.ch
-- Ravaka Nasandratriniaina Andriamifidy : nasandratriniaina.andriamifidy@students.hevs.ch
+# Development team:
+- Adrien Gaillard: adrien.gaillard@students.hevs.ch
+- Ravaka Nasandratriniaina Andriamifidy: nasandratriniaina.andriamifidy@students.hevs.ch
