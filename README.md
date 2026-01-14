@@ -16,14 +16,20 @@ and “trapping” as many of your opponent's pieces as possible. When the board
 2. Each player takes turns trying to capture as many of their opponent's pieces as possible.
 
    A piece is captured when a player places one of their pieces at the end of a line of their opponent's pieces. This is provided that the other end is occupied by a piece of the same color as the player's.
-4. They can be captured in rows, columns, diagonals, or all three at the same time.
-5. When a player has no opportunity to capture pieces of the opposite color, they are forced to pass their turn.
+3. They can be captured in rows, columns, diagonals, or all three at the same time.4
+4. When a player has no opportunity to capture pieces of the opposite color, they are forced to pass their turn.
    
 ## End of the game
+
 There are two ways to end the game: 
 1. There are no more free squares and the player with the most pieces of their color wins the game.
-2. If neither player can make a move, the player with the most pieces is declared the winner.
 <img width="1264" height="899" alt="image (3)" src="https://github.com/user-attachments/assets/6f50a30b-a76b-49c2-8a37-94ab1c619634" />
+
+2. If neither player can make a move, the player with the most pieces is declared the winner.
+
+3. There can also be a tie if both players have the same number of pieces on the board.
+   
+<img width="1234" height="906" alt="Capture d’écran 2026-01-14 161952" src="https://github.com/user-attachments/assets/def07242-d79a-4280-9b55-520ad29ab6b3" />
 
 
 # Code structure
