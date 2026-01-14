@@ -36,7 +36,6 @@ class BoardListener(game: Game) extends MouseAdapter with Config{
                   }
                   // FPS sync
                   game.display.syncGameLogic(60)
-                  game.number_of_switch = 0
                   game.startTurn()
                 }
                 else{

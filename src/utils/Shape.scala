@@ -35,13 +35,13 @@ object Shape extends Config{
                 color: Color) : Unit = {
     display.frontBuffer.synchronized{
       display.setColor(color)
-      display.drawFilledOval(cell.center.x - RADIUS, cell.center.y - RADIUS, RADIUS * 2, RADIUS * 2)
+      display.drawFilledOval(cell.center.x - RADIUS + PADDING, cell.center.y - RADIUS + PADDING, (RADIUS - PADDING) * 2, (RADIUS - PADDING) * 2)
     }
     // FPS sync
     display.syncGameLogic(60)
   }
 
-  /**val animatedRadius = (PION_RADIUS * scale).toInt
+  /**
    *
    * @param display, the FunGraphics
    * @param cell which contains the circle (Pion)
@@ -61,27 +61,6 @@ object Shape extends Config{
     }
   }
 
-  def drawDisc(
-                display: FunGraphics,
-                cell: Cell,
-                radius: Int,
-                scaleX: Double,
-                color: Color): Unit = {
-    display.setColor(color)
-
-    val cx = cell.center.x
-    val cy = cell.center.y
-    val r2 = radius * radius
-
-    for (y <- -radius to radius) {
-      val yy = cy + y
-      val dx = (math.sqrt(r2 - y*y) * scaleX).toInt
-      for (x <- -dx to dx) {
-        display.setPixel(cx + x, yy, color)
-      }
-    }
-  }
-
   def drawFlipDisc(
                     game: Game,
                     display: FunGraphics,
@@ -90,8 +69,6 @@ object Shape extends Config{
                     radius: Int,
                     color: Color
                   ): Unit = {
-
-//    if(cell.pion.color == game.current_player.color){
       display.frontBuffer.synchronized {
         display.setColor(color)
 
@@ -106,7 +83,6 @@ object Shape extends Config{
 
         display.drawFilledOval(x, y, width, height)
       }
-//    }
   }
 
 }

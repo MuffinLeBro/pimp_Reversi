@@ -124,6 +124,13 @@ class Board extends Config{
     }
   }
 
+  /**
+   * Paint pawn at a position (i, j) with a given color
+   * @param display, the FunGraphics
+   * @param color, the color of the pawn
+   * @param i, the index of line in the playboard
+   * @param j, the index of column in the playboard
+   */
   def paintPionAt(display: FunGraphics, color: Color, i: Int, j: Int): Unit = {
     display.setColor(color)
     Shape.drawDisc(display, this.playBoard(i)(j), color)
@@ -180,15 +187,21 @@ class Board extends Config{
     }
     val anim = new DiscAnimation(game, display, this.playBoard, player.color, cells_to_modify.toArray)
     anim.start()
-    cells_to_modify.size // number of flip
+    cells_to_modify.size // number of flip to do
   }
 
+  /**
+   * Show all available moves of the current player
+   * @param display, the FunGraphics
+   * @param player, the current player
+   */
   def showPlayableMoves(display: FunGraphics, player: Player): Unit = {
     for(i <- this.playBoard.indices; j <- this.playBoard(i).indices) {
       if(this.playBoard(i)(j).pion.color == GREEN){
-        Shape.drawDisc(display, this.playBoard(i)(j), GREEN)
         if(isValidMove(player, i, j)) {
-          Shape.drawDisc(display, this.playBoard(i)(j), YELLOW)
+          var new_color = new Color(0, 0 ,0 , 65)
+          if(player.color == BLACK) new_color = new Color(0, 0 ,0 , 65) else new Color(255, 255, 255, 65)
+          Shape.drawDisc(display, this.playBoard(i)(j),new_color)
         }
       }
     }
