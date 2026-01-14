@@ -3,7 +3,7 @@ package classes
 import `trait`.Config
 import hevs.graphics.FunGraphics
 import hevs.graphics.utils.GraphicsBitmap
-import listener.{BoardListener, BoardMotionListener, LoadListener}
+import listener.{BoardListener, LoadListener}
 import utils.{Dialogs, Shape}
 
 import java.awt.{Color, DisplayMode, Font, FontMetrics, Label}
@@ -148,7 +148,6 @@ class Game extends Config{
     this.displayBoard()
     this.displayText()
     this.display.addMouseListener(new BoardListener(this))
-    this.display.addMouseMotionListener(new BoardMotionListener(this))
     this.audio_tic_toc.play()
   }
 
@@ -216,10 +215,12 @@ class Game extends Config{
     this.init_game()
     this.current_player = this.players(0)
     this.updateTurn(0)
+    this.board.showPlayableMoves(this.display,this.current_player)
     this.startTurn()
   }
 
   def restart(): Unit = {
+    if(this.audio_winner.audioClip.isRunning) this.audio_winner.stop()
     this.isOnBeginning = true
     this.board = new Board(8, 8)
     this.number_of_switch = 0
@@ -229,6 +230,8 @@ class Game extends Config{
     this.displayText()
     this.current_player = this.players(0)
     this.updateTurn(0)
+    this.board.showPlayableMoves(this.display,this.current_player)
+    this.audio_tic_toc.play()
     this.startTurn()
   }
 
@@ -239,7 +242,7 @@ class Game extends Config{
   }
 
   private def end(): Unit = {
-    this.audio_tic_toc.stop()
+    if(this.audio_tic_toc.audioClip.isRunning) this.audio_tic_toc.stop()
     this.audio_winner.play()
     if(!this.isDraw) { // if there is a winner
       this.addCrownToWinner(this.players.indexOf(this.getWinner))
@@ -255,12 +258,13 @@ class Game extends Config{
     display.setColor(Color.WHITE)
     this.display.drawTransformedPicture(1100, 700, 0, 0.5, this.img_bg_button)
     this.display.drawString(POSITION_TEXT_RESTART_REPLAY._1, POSITION_TEXT_RESTART_REPLAY._2, "Replay", CUSTOM_FONT_AUDIOWIDE.deriveFont(Font.BOLD, 25f), null)
-
   }
 
   def startTurn(): Unit = {
     this.isOnBeginning = false
     if (this.isOver) { // if the game is over
+      println(s" END")
+      println(s" number of switch in the END: ${this.number_of_switch}")
       this.end()
       this.enableClick()
       this.showMessageEndGame()
@@ -268,12 +272,15 @@ class Game extends Config{
     }
     if(!this.current_player.can_play(this.board)){ // if the current player can play
       this.number_of_switch += 1
-      showMessageSkipTurn(this.current_player.name)
+      if(this.number_of_switch != 2) {
+        showMessageSkipTurn(this.current_player.name)
+      }
       this.switch_player()
+      this.board.showPlayableMoves(this.display,this.current_player)
       startTurn()
     }
     else{
-      board.showPlayableMoves(display,current_player)
+      this.number_of_switch = 0
       this.enableClick()
     }
   }
@@ -327,7 +334,7 @@ class Game extends Config{
       else if(playerName.length >= 8 && playerName.length <= 9) textX + 5
       else if(playerName.length > 9 && playerName.length <= 15) textX + 5
       else textX + 30,
-      550, s"${truncateWithEllipsis(playerName, 17)}", CUSTOM_FONT_AUDIOWIDE.deriveFont(Font.BOLD, 32f), null)
+      550, s"${truncateWithEllipsis(s"${this.getWinner.name}", 17)}", CUSTOM_FONT_AUDIOWIDE.deriveFont(Font.BOLD, 32f), null)
 
     display.setColor(Color.ORANGE)
     this.display.drawString(1025, 350, "Victory", CUSTOM_FONT_LOBSTER.deriveFont(Font.BOLD, 40f), null)
@@ -353,7 +360,10 @@ class Game extends Config{
   }
 
   private def showMessageEndGame(): Unit = {
-    display.setColor(Color.ORANGE)
-    this.display.drawString(350, 470, "End game !!", CUSTOM_FONT_AUDIOWIDE.deriveFont(Font.BOLD, 40f), null)
+    this.display.frontBuffer.synchronized {
+      display.setColor(Color.ORANGE)
+      this.display.drawString(350, 470, "End game !!", CUSTOM_FONT_AUDIOWIDE.deriveFont(Font.BOLD, 40f), null)
+    }
+    this.display.syncGameLogic(60)
   }
 }
