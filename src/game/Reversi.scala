@@ -7,6 +7,6 @@ import java.awt.event.{MouseAdapter, MouseEvent}
 
 object Reversi extends App{
   var game: Game = new Game()
-  game.start()
+  game.loadGame()
 }
 

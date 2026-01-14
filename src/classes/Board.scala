@@ -1,8 +1,8 @@
 package classes
 
 import `trait`.Config
+import animation.DiscAnimation
 import hevs.graphics.FunGraphics
-import listener.BoardListener
 import utils.Shape
 
 import java.awt
@@ -14,13 +14,14 @@ class Board extends Config{
   private var _playBoard: Array[Array[Cell]] = _  // Main board
   private var _BOARD_WIDTH: Int = 0
   private var _BOARD_HEIGHT: Int = 0
-  var listener: BoardListener = _
   private val directions: Array[(Int, Int)] = Array(   // all directions to check for possible moves
     (-1,-1), (0,-1), (1,-1),
     (-1,0),         (1,0),
     (-1,1), ( 0,1), ( 1,1)
   )
 
+  private val audio_many_flip: Audio = new Audio("/sounds/many_flip.wav")
+  private val audio_good: Audio = new Audio("/sounds/good.wav")
 
   def playBoard: Array[Array[Cell]] = _playBoard
   def playBoard_=(value: Array[Array[Cell]]): Unit = {
@@ -52,8 +53,8 @@ class Board extends Config{
     }
 
     this.playBoard(playBoard.length / 2  - 1)(playBoard.length / 2 - 1) = new Cell(new Pion(Color.WHITE)) // Pion haut à gauche
-    this.playBoard(playBoard.length / 2)(playBoard.length / 2 - 1) = new Cell(new Pion(Color.BLACK)) // Pion haut à droite
-    this.playBoard(playBoard.length / 2  - 1)(playBoard.length / 2) = new Cell(new Pion(Color.BLACK)) // Pion bas à gauche
+    this.playBoard(playBoard.length / 2)(playBoard.length / 2 - 1) = new Cell(new Pion(BLACK)) // Pion haut à droite
+    this.playBoard(playBoard.length / 2  - 1)(playBoard.length / 2) = new Cell(new Pion(BLACK)) // Pion bas à gauche
     this.playBoard(playBoard.length / 2)(playBoard.length / 2) = new Cell(new Pion(Color.WHITE)) // Pion bas à droite
 
     for(y <- MARGIN + RADIUS until BOARD_HEIGHT by RADIUS * 2){
@@ -115,7 +116,7 @@ class Board extends Config{
     false
   }
 
-  def paintFirstPion(display: FunGraphics): Unit = {
+  def paintPion(display: FunGraphics): Unit = {
     for(i <- this.playBoard.indices){
       for(j <- this.playBoard(i).indices){
         Shape.drawDisc(display, this.playBoard(i)(j))
@@ -137,13 +138,13 @@ class Board extends Config{
   }
 
   /**
-   * Change all cell pawns to a new color after a move
+   * Change all cell pawns to a new color after a move and return the number of flip
    * @param display, the FunGraphics
    * @param player, the current player
    * @param i, the index of line in the playboard
    * @param j, the index of column in the playboard
    */
-  def applyMove(display: FunGraphics, player: Player, i: Int, j: Int): Unit = {
+  def applyMove(game: Game, display: FunGraphics, player: Player, i: Int, j: Int): Int = {
     val cells_to_modify: ListBuffer[(Int, Int)] = new ListBuffer[(Int, Int)]
     cells_to_modify.prepend((i, j))
 
@@ -156,8 +157,7 @@ class Board extends Config{
 
           breakable{
             var temp_cells: ListBuffer[(Int, Int)] = new ListBuffer[(Int, Int)]
-            while((index_i >= 0 && index_j >= 0) && (index_i < this.playBoard.length && index_j < this.playBoard(index_i).length)){//Stcoker les index de la board
-              temp_cells.prepend((index_i, index_j))
+            while((index_i >= 0 && index_j >= 0) && (index_i < this.playBoard.length && index_j < this.playBoard(index_i).length)){
               if(this.playBoard(index_i)(index_j).pion.color == player.color ){
                 cells_to_modify ++= temp_cells
                 break()
@@ -166,6 +166,7 @@ class Board extends Config{
                 temp_cells.clear()
                 break()
               }
+              temp_cells.prepend((index_i, index_j))
               index_i = index_i + di
               index_j = index_j + dj
             }
@@ -174,10 +175,12 @@ class Board extends Config{
       }
     }
 
-    for((i, j) <- cells_to_modify.toArray){//Afficher les index avec les couleurs respectives noir ou blanc
-      Shape.drawDisc(display, this.playBoard(i)(j), player.color)
+    for((i, j) <- cells_to_modify.toArray){
       this.playBoard(i)(j).pion.color = player.color
     }
+    val anim = new DiscAnimation(game, display, this.playBoard, player.color, cells_to_modify.toArray)
+    anim.start()
+    cells_to_modify.size // number of flip
   }
 
   def showPlayableMoves(display: FunGraphics, player: Player): Unit = {
@@ -190,4 +193,6 @@ class Board extends Config{
       }
     }
   }
+
+
 }
