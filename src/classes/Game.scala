@@ -263,8 +263,6 @@ class Game extends Config{
   def startTurn(): Unit = {
     this.isOnBeginning = false
     if (this.isOver) { // if the game is over
-      println(s" END")
-      println(s" number of switch in the END: ${this.number_of_switch}")
       this.end()
       this.enableClick()
       this.showMessageEndGame()
