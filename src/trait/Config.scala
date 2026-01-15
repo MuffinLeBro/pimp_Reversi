@@ -14,7 +14,6 @@ trait Config {
   // Color
   val BLACK: Color = new Color(13, 13, 13)
   val GREEN: Color = new Color(54, 95, 38)
-  val YELLOW : Color = new Color(255,215,0)
   val LINE_COLOR: Color = Color.BLACK
   val BACKGROUND = new Color(67, 130, 60)
   val MESSAGE_SKIP_WIN = new Color(242, 223, 179)
@@ -25,7 +24,7 @@ trait Config {
   val CUSTOM_FONT_AUDIOWIDE: Font = Font.createFont(Font.TRUETYPE_FONT, audiowide)
   val CUSTOM_FONT_LOBSTER: Font = Font.createFont(Font.TRUETYPE_FONT, lobster)
 
-  // All text positions
+  // All text positions and images
   val POSITION_BUTTON_PLAY: (Int, Int) = (200, 650)
   val POSITION_PION: (Int, Int) = (650, 550)
   val POSITION_TEXT_PLAY: (Int, Int) = (130, 670)
