@@ -21,7 +21,7 @@ class Game extends Config{
   private var _display: FunGraphics = new FunGraphics(GRAPHICS_WIDTH, GRAPHICS_HEIGHT)
   private var _players: Array[Player] = new Array[Player](2)
   var current_player: Player = _
-  var number_of_switch: Int = 0
+  private var number_of_switch: Int = 0
   var board: Board = new Board(8, 8)
   // the audio files
   private val audio_tic_toc: Audio = new Audio("/sounds/tictoc.wav")
@@ -124,7 +124,7 @@ class Game extends Config{
 
   def loadGame(): Unit = {
     this.displayScreenloader()
-    this.audio_intro.play()
+//    this.audio_intro.play()
     this.display.addMouseListener(new LoadListener(this))
   }
 
@@ -269,13 +269,18 @@ class Game extends Config{
       return
     }
     if(!this.current_player.can_play(this.board)){ // if the current player can play
+      var name: String = this.current_player.name
       this.number_of_switch += 1
-      if(this.number_of_switch != 2) {
-        showMessageSkipTurn(this.current_player.name)
-      }
       this.switch_player()
-      this.board.showPlayableMoves(this.display,this.current_player)
-      startTurn()
+      if(this.current_player.can_play(this.board)) {
+        showMessageSkipTurn(name)
+        this.board.showPlayableMoves(this.display,this.current_player)
+        startTurn()
+      }
+      else{
+        this.number_of_switch += 1
+        startTurn()
+      }
     }
     else{
       this.number_of_switch = 0
